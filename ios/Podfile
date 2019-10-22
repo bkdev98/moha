@@ -32,4 +32,10 @@ target 'moha' do
 
   use_unimodules!
 
+
+
+
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
 end

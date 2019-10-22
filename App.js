@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ActivityIndicator, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StoreProvider } from 'easy-peasy';
+import { PersistGate } from "redux-persist/integration/react";
 
 import AppContainer from './src/navigation';
+import store, { persistor } from './src/store';
 
 StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
 
@@ -36,12 +39,16 @@ const App = () => {
   }
 
   return (
-    <>
-      <SafeAreaProvider>
-        <AppContainer />
-      </SafeAreaProvider>
-      <StatusBar barStyle='light-content' translucent />
-    </>
+    <PersistGate loading={null} persistor={persistor}>
+      <StoreProvider store={store}>
+        <>
+          <SafeAreaProvider>
+            <AppContainer />
+          </SafeAreaProvider>
+          <StatusBar barStyle='light-content' translucent />
+        </>
+      </StoreProvider>
+    </PersistGate>
   );
 }
 
