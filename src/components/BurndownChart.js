@@ -1,28 +1,102 @@
 import React from 'react';
 import { Dimensions, View, Text } from 'react-native';
 import moment from 'moment';
-import { VictoryLine, VictoryChart, VictoryAxis } from "victory-native";
+import { VictoryLine, VictoryChart } from "victory-native";
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
+import { moneyToString } from 'short-money';
 
 const { width, height } = Dimensions.get('window');
 
 const CHART_HEIGHT = height / 3;
 
-const DAYS = Array.from({ length: moment().daysInMonth() }, (v, i) => i + 1);
+const BurndownChart = ({
+  budget,
+  transactions,
+  selected,
+}) => {
+  const IS_SAME_MONTH = moment()
+    .set('month', selected.month)
+    .set('year', selected.year)
+    .isSame(moment(), 'month');
 
-const DATA = [0,0.2,1.7,4.2,4.7,5,6.5,6.8,6.9,9.2,9.5,9.6,12,12.7,14.8,15.2,16.3,16.4,18.8,19,19.1,19.2];
+  const DAYS_IN_MONTH = moment()
+    .set('month', selected.month)
+    .set('year', selected.year).daysInMonth();
 
-const CHART_DATA = DAYS.map((day, idx) => ({
-  x: day,
-  y: !isNaN(DATA[idx]) ? DATA[idx] : null,
-}));
+  const DAYS = Array.from({ length: DAYS_IN_MONTH }, (v, i) => i + 1);
 
-const BurndownChart = () => {
+  const CHART_DATA = DAYS.map((day, idx) => ({
+    x: day,
+    y: IS_SAME_MONTH && moment().get('date') < day
+      ? null
+      : transactions.reduce((pre, cur) => {
+        if (moment(cur.time).get('date') <= day) {
+          return pre + parseFloat(cur.value);
+        }
+        return pre;
+      },
+    0),
+  }));
+
+  const burnedValue = parseFloat(Math.max(...CHART_DATA.map(i => i.y)));
+
+  const diffValue = IS_SAME_MONTH
+    ? parseFloat(budget) / DAYS_IN_MONTH * moment().get('date') - burnedValue
+    : parseFloat(budget) - burnedValue;
+
+  const perDayLeft = (parseFloat(budget) - burnedValue) / (DAYS_IN_MONTH - moment().get('date'));
+
   return (
     <View>
-      <Text style={{ textAlign: 'right', marginRight: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>{DAYS[DAYS.length - 1] + 1}</Text>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 10, marginVertical: 10 }}>
+        <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
+          <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
+            {moneyToString(burnedValue)}
+          </Text>
+          <Text style={{
+            color: '#B4B7C1',
+            fontSize: 11,
+            fontFamily: 'playfair-italic',
+            marginTop: 10,
+          }}>{moment()
+            .set('month', selected.month)
+            .set('year', selected.year)
+            .isSame(moment(), 'month') ? 'used so far' : 'used'}</Text>
+        </View>
+        <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
+          <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
+            {moneyToString(diffValue)}
+          </Text>
+          <Text style={{
+            color: '#B4B7C1',
+            fontSize: 11,
+            fontFamily: 'playfair-italic',
+            marginTop: 10,
+          }}>{`${diffValue > 0 ? 'below' : 'above'} average`}</Text>
+        </View>
+        {IS_SAME_MONTH && <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
+          <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
+            {moneyToString(perDayLeft)}
+          </Text>
+          <Text style={{
+            color: '#B4B7C1',
+            fontSize: 11,
+            fontFamily: 'playfair-italic',
+            marginTop: 10,
+          }}>per day left</Text>
+        </View>}
+      </View>
+      <Text style={{ textAlign: 'right', marginRight: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>
+        {moneyToString(budget)}
+      </Text>
       <View style={{ width, marginVertical: 5, backgroundColor: 'transparent' }}>
-        <VictoryChart height={CHART_HEIGHT} width={width} padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
+        <VictoryChart
+          height={CHART_HEIGHT}
+          width={width}
+          padding={{ top: 0, bottom: 0, left: 0, right: 0 }}
+          singleQuadrantDomainPadding={false}
+          domainPadding={{ y: 2 }}
+        >
           <Defs>
             <LinearGradient id="gradient1" x1="0%" y1="0%" x2="0%" y2="100%">
               <Stop offset="0%" stopColor="#FB9ED3"/>
@@ -31,7 +105,7 @@ const BurndownChart = () => {
           </Defs>
           <VictoryLine
             interpolation="basis"
-            animate={{ duration: 3000 }}
+            animate={{ duration: 2000 }}
             style={{
               data: { stroke: "url(#gradient1)", strokeWidth: 2 },
             }}
@@ -39,17 +113,16 @@ const BurndownChart = () => {
           />
           <VictoryLine
             style={{
-              data: { stroke: "rgba(255,255,255,0.1)", strokeWidth: 2 }
+              data: { stroke: "rgba(255,255,255,0.1)", strokeWidth: 2 },
             }}
-            data={[{ x: 1, y: 0 }, { x: DAYS[DAYS.length - 1], y: 30 }]}
+            data={[{ x: 1, y: 0 }, { x: DAYS_IN_MONTH, y: parseFloat(budget) }]}
           />
-          <VictoryAxis />
-          <VictoryLine
+          {/* <VictoryLine
             style={{
               data: { stroke: "#FFF" }
             }}
             data={[{ x: CHART_DATA[DATA.length - 1].x, y: CHART_DATA[DATA.length - 1].y }, { x: CHART_DATA[DATA.length - 1].x, y: CHART_DATA[DATA.length - 1].y + 1.8 }]}
-          />
+          /> */}
         </VictoryChart>
       </View>
       <Text style={{ marginLeft: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>0</Text>

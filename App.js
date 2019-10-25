@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, StyleSheet, Text, View, ActivityIndicator, StatusBar } from 'react-native';
+import { Platform, StyleSheet, Text, View, ActivityIndicator, StatusBar, UIManager } from 'react-native';
 import * as Font from 'expo-font';
+import { Asset } from 'expo-asset';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StoreProvider } from 'easy-peasy';
 import { PersistGate } from "redux-persist/integration/react";
 
 import AppContainer from './src/navigation';
 import store, { persistor } from './src/store';
+import { BLACK_ICONS, WHITE_ICONS, GRADIENT_ICONS } from './src/utils/icons';
 
 StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -23,6 +31,7 @@ const App = () => {
       'playfair-italic': require('./assets/fonts/Playfair_Display/PlayfairDisplay-Italic.ttf'),
       'playfair-regular': require('./assets/fonts/Playfair_Display/PlayfairDisplay-Regular.ttf'),
     });
+    await Asset.loadAsync([...BLACK_ICONS, ...WHITE_ICONS, ...GRADIENT_ICONS]);
     setIsReady(true);
   }
 

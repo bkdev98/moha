@@ -38,7 +38,7 @@ const EditBudget = ({ navigation }) => {
           paddingBottom: 5,
         }}>
           <TextInput
-            value={budget}
+            value={String(budget)}
             onChangeText={value => value < 999999999999 && setBudget(value)}
             textAlign='center'
             autoFocus
@@ -87,7 +87,7 @@ const EditBudget = ({ navigation }) => {
         </View>
       </KeyboardAvoidingView>
       {showBack && <BackButton />}
-      {budget ? <FAB icon='check' onPress={() => navigation.navigate('App')} /> : null}
+      {budget ? <FAB icon='check' onPress={() => navigation.navigate(showBack ? 'Home' : 'App')} /> : null}
     </ScrollView>
   );
 }

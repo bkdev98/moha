@@ -12,7 +12,7 @@ const FAB = ({ icon, onPress }) => (
       position: 'absolute',
       bottom: 40,
       right: 20,
-      zIndex: 99999,
+      zIndex: 99,
     }}
     onPress={onPress}
   >

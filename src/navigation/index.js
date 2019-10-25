@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import HomeScreen from '../screens/Home';
-import NewTransactionScreen from '../screens/NewTransaction';
+import TransactionScreen from '../screens/Transaction';
 import SettingScreen from '../screens/Setting';
 import InitialScreen from '../screens/Initial';
 import EditBudgetScreen from '../screens/EditBudget';
@@ -15,8 +15,8 @@ const HomeNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
   },
-  NewTransaction: {
-    screen: NewTransactionScreen,
+  Transaction: {
+    screen: TransactionScreen,
   },
 }, {
   defaultNavigationOptions: {

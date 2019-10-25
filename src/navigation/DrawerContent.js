@@ -35,7 +35,7 @@ const DrawerContent = ({ navigation }) => {
               fontSize: 14,
               fontFamily: 'playfair-regular',
             }}>Edit budget</Text>
-            <SimpleLineIcons name='arrow-right' size={12} color='#FFFFFF' />
+            <SimpleLineIcons style={{ marginTop: 2 }} name='arrow-right' size={12} color='#FFFFFF' />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -55,11 +55,15 @@ const DrawerContent = ({ navigation }) => {
               fontSize: 14,
               fontFamily: 'playfair-regular',
             }}>Language</Text>
-            <Text style={{
-              color: '#FFFFFF',
-              fontSize: 12,
-              fontFamily: 'playfair-italic',
-            }}>{locale}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{
+                color: '#FFFFFF',
+                fontSize: 12,
+                fontFamily: 'playfair-italic',
+                marginRight: 10,
+              }}>{locale}</Text>
+              <SimpleLineIcons style={{ marginTop: 2 }} name='arrow-right' size={12} color='#FFFFFF' />
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -79,11 +83,15 @@ const DrawerContent = ({ navigation }) => {
               fontSize: 14,
               fontFamily: 'playfair-regular',
             }}>Currency</Text>
-            <Text style={{
-              color: '#FFFFFF',
-              fontSize: 12,
-              fontFamily: 'playfair-italic',
-            }}>{currency}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{
+                color: '#FFFFFF',
+                fontSize: 12,
+                fontFamily: 'playfair-italic',
+                marginRight: 10,
+              }}>{currency}</Text>
+              <SimpleLineIcons style={{ marginTop: 2 }} name='arrow-right' size={12} color='#FFFFFF' />
+            </View>
           </TouchableOpacity>
         </View>
         <View style={{ position: 'absolute', bottom: 20, left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }}>
