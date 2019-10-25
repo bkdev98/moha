@@ -42,6 +42,10 @@ const Home = ({ navigation }) => {
       ],
     )
   }
+  const IS_SAME_MONTH = moment()
+    .set('month', selected.month)
+    .set('year', selected.year)
+    .isSame(moment(), 'month');
 
   const monthTransactions = transactions.filter(i => moment(i.time)
     .isSame(moment().set('month', selected.month).set('year', selected.year), 'month'));
@@ -90,7 +94,12 @@ const Home = ({ navigation }) => {
         ListHeaderComponent={(
           <BurndownChart selected={selected} budget={budget} transactions={monthTransactions} />
         )}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        ListEmptyComponent={IS_SAME_MONTH && (
+          <View style={{ opacity: 0.15, position: 'absolute', bottom: 90, right: 90, width: 120, height: 120, overflow: 'visible' }}>
+            <Image source={require('../../assets/images/empty-arrow.png')} style={{ resizeMode: 'contain', height: undefined, width: undefined, flex: 1 }} />
+          </View>
+        )}
+        contentContainerStyle={monthTransactions.length === 0 ? { flex: 1 } : { paddingBottom: 120 }}
         rightOpenValue={-110}
         renderHiddenItem={({ item }) => (
           <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 20, marginHorizontal: 20 }}>
@@ -151,11 +160,7 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
-      {moment()
-        .set('month', selected.month)
-        .set('year', selected.year)
-        .isSame(moment(), 'month')
-        && <FAB icon='plus' onPress={() => navigation.navigate('Transaction')} />}
+      {IS_SAME_MONTH && <FAB icon='plus' onPress={() => navigation.navigate('Transaction')} />}
       <MonthYearPicker ref={ref => picker = ref} />
     </View>
   );
