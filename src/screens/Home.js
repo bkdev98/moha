@@ -9,15 +9,19 @@ import i18n from 'i18n-js';
 import FAB from '../components/FAB';
 import BurndownChart from '../components/BurndownChart';
 import MonthYearPicker from '../components/MonthYearPicker';
+import ScrollTopButton from '../components/ScrollTopButton';
 import { GRADIENT_ICONS } from '../utils/icons';
 import { formatMoney } from '../utils';
 
 const Home = ({ navigation }) => {
   let picker = useRef(null);
+  let list = useRef(null);
+
   const [selected, setSelected] = useState({
     month: moment().month(),
     year: moment().year(),
   });
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const transactions = useStoreState(state => state.transaction.items);
   const budget = useStoreState(state => state.app.budget);
@@ -91,7 +95,10 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <SwipeListView
+        listViewRef={ref => list = ref}
         data={monthTransactions}
+        disableRightSwipe
+        onScroll={e => setShowScrollTop(e.nativeEvent.contentOffset.y > 50)}
         keyExtractor={i => i.time.toString()}
         ListHeaderComponent={(
           <BurndownChart selected={selected} budget={budget} transactions={monthTransactions} />
@@ -161,6 +168,10 @@ const Home = ({ navigation }) => {
             }}>{currency === 'usd' && '$'}{formatMoney(item.value)}</Text>
           </TouchableOpacity>
         )}
+      />
+      <ScrollTopButton
+        onPress={() => list && list.scrollToOffset({ animated: true, offset: 0 })}
+        visible={showScrollTop}
       />
       {IS_SAME_MONTH && <FAB icon='plus' onPress={() => navigation.navigate('Transaction')} />}
       <MonthYearPicker ref={ref => picker = ref} />
