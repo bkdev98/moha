@@ -25,8 +25,19 @@ const Transaction = ({ navigation }) => {
   const editTransaction = useStoreActions(state => state.transaction.editTransaction);
 
   const [state, setState] = useState(data);
+  const [errors, setErrors] = useState({
+    name: false,
+    value: false,
+  });
 
   const handleSubmit = () => {
+    if (!state.name || !state.value) {
+      return setErrors({
+        name: !state.name,
+        value: !state.value,
+      })
+    }
+
     if (type === 'create') {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
       addTransaction({
@@ -68,14 +79,20 @@ const Transaction = ({ navigation }) => {
             paddingBottom: 5,
             width: WIDTH - 40,
             marginLeft: 20,
+            borderWidth: errors.name ? 2 : 0,
+            borderColor: '#F3682F',
           }}>
             <TextInput
               value={state.name}
-              onChangeText={value => setState({ ...state, name: value })}
+              onChangeText={value => {
+                setErrors({ ...errors, name: false });
+                setState({ ...state, name: value });
+              }}
               autoFocus
               selectionColor='#FB9ED3'
               underlineColorAndroid='transparent'
               placeholder={i18n.t('coffee')}
+              placeholderTextColor='rgba(255,255,255,0.1)'
               style={{
                 fontSize: 18,
                 fontFamily: 'playfair-regular',
@@ -103,10 +120,17 @@ const Transaction = ({ navigation }) => {
             paddingBottom: 5,
             width: WIDTH - 40,
             marginLeft: 20,
+            borderWidth: errors.value ? 2 : 0,
+            borderColor: '#F3682F',
           }}>
             <TextInput
               value={String(state.value)}
-              onChangeText={value => value >= 0 && value < 999999999999 && setState({ ...state, value })}
+              onChangeText={value => {
+                if (value >= 0 && value < 999999999999) {
+                  setErrors({ ...errors, value: false })
+                  setState({ ...state, value });
+                }
+              }}
               selectionColor='#FB9ED3'
               underlineColorAndroid='transparent'
               keyboardType='numeric'
