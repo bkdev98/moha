@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Picker, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import i18n from 'i18n-js';
 
 export default class MonthYearPicker extends Component {
   constructor(props) {
@@ -94,11 +95,11 @@ export default class MonthYearPicker extends Component {
         <View style={styles.outerContainer}>
           <View style={styles.toolBar}>
             <TouchableOpacity style={styles.toolBarButton} onPress={this.onCancelPress}>
-              <Text style={styles.toolBarButtonText}>Cancel</Text>
+              <Text style={styles.toolBarButtonText}>{i18n.t('cancel')}</Text>
             </TouchableOpacity>
             <View style={{ flex: 1 }} />
             <TouchableOpacity style={styles.toolBarButton} onPress={this.onConfirmPress}>
-              <Text style={styles.toolBarButtonText}>Confirm</Text>
+              <Text style={styles.toolBarButtonText}>{i18n.t('confirm')}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.innerContainer}>

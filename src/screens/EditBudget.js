@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, TextInput, Text, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import i18n from 'i18n-js';
 
 import BackButton from '../components/BackButton';
 import FAB from '../components/FAB';
@@ -28,7 +29,7 @@ const EditBudget = ({ navigation }) => {
           fontFamily: 'playfair-regular',
           fontSize: 18,
           textAlign: 'center',
-        }}>Enter your monthly budget</Text>
+        }}>{i18n.t('enterYourMonthlyBudget')}</Text>
         <View style={{
           backgroundColor: '#282B35',
           borderRadius: 5,

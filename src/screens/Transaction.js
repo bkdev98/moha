@@ -3,6 +3,7 @@ import { ScrollView, View, KeyboardAvoidingView, Text, TextInput, Dimensions, To
 import { useStoreActions } from 'easy-peasy';
 import { FlatGrid } from 'react-native-super-grid';
 import { LinearGradient } from 'expo-linear-gradient';
+import i18n from 'i18n-js';
 
 import FAB from '../components/FAB';
 import BackButton from '../components/BackButton';
@@ -57,7 +58,7 @@ const Transaction = ({ navigation }) => {
             fontFamily: 'playfair-regular',
             fontSize: 16,
             marginLeft: 20,
-          }}>Transaction name:</Text>
+          }}>{i18n.t('transactionName')}:</Text>
           <View style={{
             backgroundColor: '#282B35',
             borderRadius: 5,
@@ -74,6 +75,7 @@ const Transaction = ({ navigation }) => {
               autoFocus
               selectionColor='#FB9ED3'
               underlineColorAndroid='transparent'
+              placeholder={i18n.t('coffee')}
               style={{
                 fontSize: 18,
                 fontFamily: 'playfair-regular',
@@ -91,7 +93,7 @@ const Transaction = ({ navigation }) => {
             fontSize: 16,
             marginTop: 20,
             marginLeft: 20,
-          }}>Total value:</Text>
+          }}>{i18n.t('totalValue')}:</Text>
           <View style={{
             backgroundColor: '#282B35',
             borderRadius: 5,
@@ -104,7 +106,7 @@ const Transaction = ({ navigation }) => {
           }}>
             <TextInput
               value={String(state.value)}
-              onChangeText={value => value < 999999999999 && setState({ ...state, value })}
+              onChangeText={value => value >= 0 && value < 999999999999 && setState({ ...state, value })}
               selectionColor='#FB9ED3'
               underlineColorAndroid='transparent'
               keyboardType='numeric'
@@ -125,7 +127,7 @@ const Transaction = ({ navigation }) => {
             fontSize: 16,
             marginTop: 20,
             marginLeft: 20,
-          }}>Select an icon:</Text>
+          }}>{i18n.t('selectAnIcon')}:</Text>
           <FlatGrid
             items={WHITE_ICONS}
             style={{ maxHeight: HEIGHT / 3 }}

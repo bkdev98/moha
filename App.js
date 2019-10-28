@@ -5,10 +5,15 @@ import { Asset } from 'expo-asset';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StoreProvider } from 'easy-peasy';
 import { PersistGate } from "redux-persist/integration/react";
+import i18n from 'i18n-js';
 
 import AppContainer from './src/navigation';
 import store, { persistor } from './src/store';
 import { BLACK_ICONS, WHITE_ICONS, GRADIENT_ICONS } from './src/utils/icons';
+import { vi, en } from './src/translations';
+
+i18n.fallbacks = true;
+i18n.translations = { vi, en };
 
 StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
 

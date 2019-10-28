@@ -3,7 +3,10 @@ import { Dimensions, View, Text } from 'react-native';
 import moment from 'moment';
 import { VictoryLine, VictoryChart } from "victory-native";
 import { Defs, LinearGradient, Stop } from 'react-native-svg';
-import { moneyToString } from 'short-money';
+import i18n from 'i18n-js';
+import { useStoreState } from 'easy-peasy';
+
+import { formatMoney } from '../utils';
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,6 +17,8 @@ const BurndownChart = ({
   transactions,
   selected,
 }) => {
+  const currency = useStoreState(state => state.app.currency);
+
   const IS_SAME_MONTH = moment()
     .set('month', selected.month)
     .set('year', selected.year)
@@ -51,7 +56,7 @@ const BurndownChart = ({
       <View style={{ flexDirection: 'row', paddingHorizontal: 10, marginVertical: 10 }}>
         <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
           <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
-            {moneyToString(burnedValue)}
+            {formatMoney(burnedValue)}
           </Text>
           <Text style={{
             color: '#B4B7C1',
@@ -61,33 +66,33 @@ const BurndownChart = ({
           }}>{moment()
             .set('month', selected.month)
             .set('year', selected.year)
-            .isSame(moment(), 'month') ? 'used so far' : 'used'}</Text>
+            .isSame(moment(), 'month') ? i18n.t('usedSoFar') : 'used'}</Text>
         </View>
         <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
-          <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
-            {moneyToString(diffValue)}
+          <Text style={{ color: diffValue > 0 ? '#FFF' : '#F3682F', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
+            {formatMoney(Math.abs(diffValue))}
           </Text>
           <Text style={{
             color: '#B4B7C1',
             fontSize: 11,
             fontFamily: 'playfair-italic',
             marginTop: 10,
-          }}>{`${diffValue > 0 ? 'below' : 'above'} average`}</Text>
+          }}>{`${diffValue > 0 ? i18n.t('below') : i18n.t('above')} ${i18n.t('average')}`}</Text>
         </View>
         {IS_SAME_MONTH && <View style={{ backgroundColor: '#282B35', flex: 1, borderRadius: 5, padding: 15, margin: 10, justifyContent: 'space-between' }}>
           <Text style={{ color: '#FFF', fontFamily: 'major-mono', fontSize: 16, letterSpacing: -1 }}>
-            {moneyToString(perDayLeft)}
+            {formatMoney(perDayLeft > 0 ? perDayLeft : 0)}
           </Text>
           <Text style={{
             color: '#B4B7C1',
             fontSize: 11,
             fontFamily: 'playfair-italic',
             marginTop: 10,
-          }}>per day left</Text>
+          }}>{i18n.t('perDayLeft')}</Text>
         </View>}
       </View>
       <Text style={{ textAlign: 'right', marginRight: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>
-        {moneyToString(budget)}
+        {currency === 'usd' && '$'}{formatMoney(budget)}
       </Text>
       <View style={{ width, marginVertical: 5, backgroundColor: 'transparent' }}>
         <VictoryChart
@@ -117,15 +122,11 @@ const BurndownChart = ({
             }}
             data={[{ x: 1, y: 0 }, { x: DAYS_IN_MONTH, y: parseFloat(budget) }]}
           />
-          {/* <VictoryLine
-            style={{
-              data: { stroke: "#FFF" }
-            }}
-            data={[{ x: CHART_DATA[DATA.length - 1].x, y: CHART_DATA[DATA.length - 1].y }, { x: CHART_DATA[DATA.length - 1].x, y: CHART_DATA[DATA.length - 1].y + 1.8 }]}
-          /> */}
         </VictoryChart>
       </View>
-      <Text style={{ marginLeft: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>0</Text>
+      <Text style={{ marginLeft: 10, color: '#FFF', fontFamily: 'major-mono', fontSize: 12 }}>
+        {currency === 'usd' && '$'}0{currency === 'vnd' && 'đ'}
+      </Text>
     </View>
   );
 }

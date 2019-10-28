@@ -3,13 +3,14 @@ import { Text, View, StatusBar, TouchableOpacity, Platform, Image, Alert, Layout
 import { SimpleLineIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { moneyToString } from 'short-money';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import i18n from 'i18n-js';
 
 import FAB from '../components/FAB';
 import BurndownChart from '../components/BurndownChart';
 import MonthYearPicker from '../components/MonthYearPicker';
 import { GRADIENT_ICONS } from '../utils/icons';
+import { formatMoney } from '../utils';
 
 const Home = ({ navigation }) => {
   let picker = useRef(null);
@@ -20,20 +21,21 @@ const Home = ({ navigation }) => {
 
   const transactions = useStoreState(state => state.transaction.items);
   const budget = useStoreState(state => state.app.budget);
+  const currency = useStoreState(state => state.app.currency);
 
   const deleteTransaction = useStoreActions(state => state.transaction.deleteTransaction);
 
   const handleDeleteTransaction = data => {
     Alert.alert(
-      'Confirm',
-      `Delete ${data.name}?`,
+      i18n.t('confirm'),
+      `${i18n.t('delete')} ${data.name}?`,
       [
         {
-          text: 'Cancel',
+          text: i18n.t('cancel'),
           style: 'cancel',
         },
         {
-          text: 'OK',
+          text: i18n.t('ok'),
           onPress: () => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
             deleteTransaction(data.time);
@@ -156,7 +158,7 @@ const Home = ({ navigation }) => {
               fontFamily: 'major-mono',
               fontSize: 14,
               color: '#FFFFFF',
-            }}>{moneyToString(item.value)}</Text>
+            }}>{currency === 'usd' && '$'}{formatMoney(item.value)}</Text>
           </TouchableOpacity>
         )}
       />
