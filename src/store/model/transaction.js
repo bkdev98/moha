@@ -14,4 +14,8 @@ export default {
     ...state,
     items: state.items.filter(i => i.time !== payload),
   })),
+  mockTransaction: action((state, payload) => ({
+    ...state,
+    items: payload,
+  })),
 };

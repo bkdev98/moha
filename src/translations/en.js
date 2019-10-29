@@ -2,7 +2,7 @@ export default {
   usedSoFar: 'used this month',
   below: 'below',
   above: 'exceeded',
-  average: 'the budget',
+  average: 'the average budget',
   perDayLeft: 'per day left',
   setLanguage: 'Set language',
   setCurrency: 'Set currency',

@@ -11,7 +11,7 @@ const FAQ = () => {
   const data = locale === 'vi' ? [
     {
       q: 'Ứng dụng này để làm gì?',
-      a: 'Hoha giúp bạn theo dõi và so sánh các khoản chi tiêu với ngân sách hàng tháng của bạn bằng một biểu đồ đơn giản.',
+      a: 'Moha giúp bạn theo dõi và so sánh các khoản chi tiêu với ngân sách hàng tháng của bạn bằng một biểu đồ đơn giản.',
     },
     {
       q: 'Tôi không tìm thấy tính năng/icon mình mong muốn?',
@@ -28,7 +28,7 @@ const FAQ = () => {
   ] : [
     {
       q: 'What does this app do?',
-      a: 'Hoha help you track your spending against your monthly budget on one simple chart.',
+      a: 'Moha help you track your spending against your monthly budget on one simple chart.',
     },
     {
       q: 'I can\'t find features/icon I want?',

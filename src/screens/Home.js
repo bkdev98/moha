@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Text, View, StatusBar, TouchableOpacity, Platform, Image, Alert, LayoutAnimation } from 'react-native';
+import { Text, View, StatusBar, TouchableOpacity, Platform, Image, Alert, LayoutAnimation, Dimensions } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import { useStoreState, useStoreActions } from 'easy-peasy';
@@ -12,10 +12,15 @@ import MonthYearPicker from '../components/MonthYearPicker';
 import ScrollTopButton from '../components/ScrollTopButton';
 import { GRADIENT_ICONS } from '../utils/icons';
 import { formatMoney } from '../utils';
+// import useMock from '../utils/useMock';
+
+const height = Dimensions.get('window').height;
 
 const Home = ({ navigation }) => {
   let picker = useRef(null);
   let list = useRef(null);
+
+  // const mockResult = useMock();
 
   const [selected, setSelected] = useState({
     month: moment().month(),
@@ -98,7 +103,7 @@ const Home = ({ navigation }) => {
         listViewRef={ref => list = ref}
         data={monthTransactions}
         disableRightSwipe
-        onScroll={e => setShowScrollTop(e.nativeEvent.contentOffset.y > 50)}
+        onScroll={e => setShowScrollTop(e.nativeEvent.contentOffset.y > height / 3 + 150)}
         keyExtractor={i => i.time.toString()}
         ListHeaderComponent={(
           <BurndownChart selected={selected} budget={budget} transactions={monthTransactions} />

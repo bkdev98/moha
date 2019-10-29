@@ -114,13 +114,13 @@ const BurndownChart = ({
             style={{
               data: { stroke: "url(#gradient1)", strokeWidth: 2 },
             }}
-            data={CHART_DATA}
+            data={[{ x: 0, y: 0 }, ...CHART_DATA]}
           />
           <VictoryLine
             style={{
               data: { stroke: "rgba(255,255,255,0.1)", strokeWidth: 2 },
             }}
-            data={[{ x: 1, y: 0 }, { x: DAYS_IN_MONTH, y: parseFloat(budget) }]}
+            data={[{ x: 0, y: 0 }, { x: DAYS_IN_MONTH, y: parseFloat(budget) }]}
           />
         </VictoryChart>
       </View>

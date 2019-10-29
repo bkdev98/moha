@@ -10,7 +10,7 @@ const About = () => {
 
   const data = locale === 'vi' ? [
     'Tác giả: Quốc Khánh',
-    'Những icon được cung cấp bởi Tilda Publishing',
+    'Icon được cung cấp bởi Tilda Publishing',
   ] : [
     'Author: Quoc Khanh',
     'Icons are provided by Tilda Publishing',

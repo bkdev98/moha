@@ -2,7 +2,7 @@ export default {
   usedSoFar: 'đã dùng trong tháng này',
   below: 'dưới',
   above: 'vượt',
-  average: 'mức ngân sách',
+  average: 'ngân sách trung bình',
   perDayLeft: 'còn lại mỗi ngày',
   setLanguage: 'Thay đổi ngôn ngữ',
   setCurrency: 'Đơn vị tiền tệ',
