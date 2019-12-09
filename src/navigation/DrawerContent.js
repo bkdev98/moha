@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, TouchableOpacity, Text, View, Platform, Dimensions } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+// import SafeAreaView from 'react-native-safe-area-view';
 import { useStoreState } from 'easy-peasy';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
@@ -60,10 +60,11 @@ const DrawerContent = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#22252D' }} contentContainerStyle={{ height }}>
-      <SafeAreaView
+      {/* <SafeAreaView
         style={{ flex: 1, backgroundColor: '#22252D' }}
         forceInset={{ top: 'always', horizontal: 'never' }}
-      >
+      > */}
+      <View style={{ flex: 1, backgroundColor: '#22252D' }}>
         <View style={{ marginTop: Platform.OS === 'android' ? 105 : 70 }}>
           <SectionTitle title={i18n.t('general')} />
           <DrawerItem title={i18n.t('editBudget')} onPress={() => navigation.navigate('EditBudget')} />
@@ -85,7 +86,8 @@ const DrawerContent = ({ navigation }) => {
             fontFamily: 'major-mono',
           }}>{i18n.t('version')} 1.0.0</Text>
         </View>
-      </SafeAreaView>
+      </View>
+      {/* </SafeAreaView> */}
     </ScrollView>
   );
 }

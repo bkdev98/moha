@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, ActivityIndicator, StatusBar, UIManager } from 'react-native';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StoreProvider } from 'easy-peasy';
 import { PersistGate } from "redux-persist/integration/react";
 import i18n from 'i18n-js';
-import { enableScreens } from 'react-native-screens';
+// import { enableScreens } from 'react-native-screens';
 
 import AppContainer from './src/navigation';
 import store, { persistor } from './src/store';
@@ -16,7 +16,7 @@ import { vi, en } from './src/translations';
 i18n.fallbacks = true;
 i18n.translations = { vi, en };
 
-enableScreens();
+// enableScreens();
 
 StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
 
@@ -59,9 +59,9 @@ const App = () => {
     <PersistGate loading={null} persistor={persistor}>
       <StoreProvider store={store}>
         <>
-          <SafeAreaProvider>
+          {/* <SafeAreaProvider> */}
             <AppContainer />
-          </SafeAreaProvider>
+          {/* </SafeAreaProvider> */}
           <StatusBar barStyle='light-content' translucent />
         </>
       </StoreProvider>

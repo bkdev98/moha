@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 10594,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://m9-rv3.bkdev.moha.exp.direct",
   "packagerNgrokUrl": "https://packager.m9-rv3.bkdev.moha.exp.direct",
-  "ngrokPid": 10606
+  "ngrokPid": 17999
 }
